@@ -29,8 +29,8 @@ dropout = 0.8
 ratio = np.array([0.8,0.9]) #Ratios where to split the training and validation set
 
 """Load the data"""
-direc = '/home/rob/Dropbox/ml_projects/LSTM/UCR_TS_Archive_2015'
-X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio,dataset='ChlorineConcentration')
+direc = '/home/kyle/dvlp/ml/LSTM_tsc/UCR_TS_Archive_2015'
+X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio,dataset='Two_Patterns')
 N,sl = X_train.shape
 config['sl'] = sl = X_train.shape[1]
 config['num_classes'] = num_classes = len(np.unique(y_train))
@@ -47,7 +47,7 @@ model = Model(config)
 
 """Session time"""
 sess = tf.Session() #Depending on your use, do not forget to close the session
-writer = tf.summary.FileWriter("/home/rob/Dropbox/ml_projects/LSTM/log_tb", sess.graph)  #writer for Tensorboard
+writer = tf.summary.FileWriter("/home/kyle/dvlp/ml/LSTM/log_tb", sess.graph)  #writer for Tensorboard
 sess.run(model.init_op)
 
 step = 0

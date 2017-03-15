@@ -84,13 +84,13 @@ class Model():
     self.keep_prob = tf.placeholder("float", name = 'Drop_out_keep_prob')
 
     with tf.name_scope("LSTM_setup") as scope:
-      cell = tf.nn.rnn_cell.LSTMCell(hidden_size)
-      cell = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=self.keep_prob)
-      cell = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers)
+      cell = tf.contrib.rnn.LSTMCell(hidden_size)
+      cell = tf.contrib.rnn.DropoutWrapper(cell, output_keep_prob=self.keep_prob)
+      cell = tf.contrib.rnn.MultiRNNCell([cell] * num_layers)
       initial_state = cell.zero_state(self.batch_size, tf.float32)
     
     input_list = tf.unstack(tf.expand_dims(self.input,axis=2),axis=1)
-    outputs,_ = tf.nn.seq2seq.rnn_decoder(input_list,initial_state,cell)
+    outputs,_ = tf.contrib.legacy_seq2seq.rnn_decoder(input_list,initial_state,cell)
 
     output = outputs[-1]
 
@@ -104,7 +104,7 @@ class Model():
         softmax_b = tf.get_variable("softmax_b", [num_classes])
       logits = tf.nn.xw_plus_b(output, softmax_w, softmax_b)
       #Use sparse Softmax because we have mutually exclusive classes
-      loss = tf.nn.sparse_softmax_cross_entropy_with_logits(logits,self.labels,name = 'softmax')
+      loss = tf.contrib.nn.deprecated_flipped_sparse_softmax_cross_entropy_with_logits(logits,self.labels,name = 'softmax')
       self.cost = tf.reduce_sum(loss) / self.batch_size
     with tf.name_scope("Evaluating_accuracy") as scope:
       correct_prediction = tf.equal(tf.argmax(logits,1),self.labels)
