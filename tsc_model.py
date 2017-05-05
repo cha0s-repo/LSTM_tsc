@@ -30,8 +30,9 @@ def load_data(direc,ratio,dataset):
   dataset: name of the dataset in the UCR archive"""
   datadir = direc + '/' + dataset + '/' + dataset
   data_train = np.loadtxt(datadir+'_TRAIN',delimiter=',')
-  data_test_val = np.loadtxt(datadir+'_TEST',delimiter=',')
-  DATA = np.concatenate((data_train,data_test_val),axis=0)
+  #data_test_val = np.loadtxt(datadir+'_TEST',delimiter=',')
+  #DATA = np.concatenate((data_train,data_test_val),axis=0)
+  DATA = data_train
   N = DATA.shape[0]
 
   ratio = (ratio*N).astype(np.int32)
@@ -40,9 +41,9 @@ def load_data(direc,ratio,dataset):
   X_val = DATA[ind[ratio[0]:ratio[1]],1:]
   X_test = DATA[ind[ratio[1]:],1:]
   # Targets have labels 1-indexed. We subtract one for 0-indexed
-  y_train = DATA[ind[:ratio[0]],0]-1
-  y_val = DATA[ind[ratio[0]:ratio[1]],0]-1
-  y_test = DATA[ind[ratio[1]:],0]-1
+  y_train = DATA[ind[:ratio[0]],0]
+  y_val = DATA[ind[ratio[0]:ratio[1]],0]
+  y_test = DATA[ind[ratio[1]:],0]
   return X_train,X_val,X_test,y_train,y_val,y_test
 
 

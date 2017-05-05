@@ -18,19 +18,19 @@ from tsc_model import Model,sample_batch,load_data,check_test
 """Hyperparamaters"""
 
 config = {}                             #Put all configuration information into the dict
-config['num_layers'] = 3                #number of layers of stacked RNN's
-config['hidden_size'] = 120              #memory cells in a layer
-config['max_grad_norm'] = 5             #maximum gradient norm during training
+config['num_layers'] = 80               #number of layers of stacked RNN's
+config['hidden_size'] = 40              #memory cells in a layer
+config['max_grad_norm'] = 100           #maximum gradient norm during training
 config['batch_size'] = batch_size = 30  
-config['learning_rate'] = .005
+config['learning_rate'] = .0001
 
-max_iterations = 3000
+max_iterations = 5000
 dropout = 0.8
 ratio = np.array([0.8,0.9]) #Ratios where to split the training and validation set
 
 """Load the data"""
 direc = '/home/kyle/dvlp/ml/LSTM_tsc/UCR_TS_Archive_2015'
-X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio,dataset='Two_Patterns')
+X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio,dataset='IXIC')
 N,sl = X_train.shape
 config['sl'] = sl = X_train.shape[1]
 config['num_classes'] = num_classes = len(np.unique(y_train))
